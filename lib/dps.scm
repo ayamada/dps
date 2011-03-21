@@ -1,6 +1,8 @@
-#!/usr/local/gauche/bin/gosh
+;;; dps main module
 
-(define-module rdmms
+;;; TODO: 将来は、 dps.server や dps.client 等に分割するかも
+
+(define-module dps
   (use srfi-1)
   (use text.tree)
   (use gauche.charconv)
@@ -13,8 +15,20 @@
   (c-load-library "libuuid.so")
   (c-include "uuid/uuid.h")
   (export
+    <dps-server>
+    dps-server-main
     ))
-(select-module rdmms)
+(select-module dps)
+
+
+(define-class <dps-server> ()
+  (
+   (dbm :init-keyword :dbm
+        :init-form (error "dbm not found"))
+   ))
+
+(define-method initialize ((self <dps-server>) initargs)
+  (next-method))
 
 ;; TODO: zmq回りはあとで別モジュールに分ける筈なので、
 ;;       それを前提として手続き等を分離しておく事
@@ -60,7 +74,8 @@
           "まだです\n"
           (generate-uuid-string))))))
 
-(define (main args)
+
+(define-method dps-server-main ((self <dps-server>) . keywords)
   ;; あとで
   ;; まず、最小で動くコードを書く必要がある。
   ;; それは、どのような動作をするコード？
@@ -71,9 +86,6 @@
 
 
 ;;;===================================================================
-
-(select-module user)
-(define main (with-module rdmms main))
 
 ;; Local variables:
 ;; mode: scheme

@@ -1,0 +1,45 @@
+#!/usr/local/gauche/bin/gosh
+
+(define-module dps-server
+  (use file.util)
+  (define-macro (add-load-path-from-script-relative-path relative-path)
+    (let1 path (resolve-path
+                 (build-path
+                   (current-directory)
+                   (with-module user *program-name*)
+                   'up
+                   relative-path))
+      (eval `(add-load-path ,path) (current-module))
+      #f))
+  (add-load-path-from-script-relative-path "../lib")
+
+  (use dps)
+  (use dbm.fsdbm)
+  (export
+    ))
+(select-module dps-server)
+
+
+(define (main args)
+  (let* (
+         (dps-server (make <dps-server>
+                           ;:dbm (make <fsdbm>
+                           ;           :path *dbm-path*
+                           ;           :rw-mode :write
+                           ;           :key-convert #t
+                           ;           :value-convert #t)
+                           :dbm #f
+                           ;; TODO: あとで引数を追加する
+                           )))
+    (dps-server-main dps-server)))
+
+
+;;;===================================================================
+
+(select-module user)
+(define main (with-module dps-server main))
+
+;; Local variables:
+;; mode: scheme
+;; end:
+;; vim: set ft=scheme fenc=utf-8:
