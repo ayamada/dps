@@ -20,15 +20,25 @@
 (select-module dps-server)
 
 
+(define *project-path*
+  (resolve-path
+    (build-path
+      (current-directory)
+      (with-module user *program-name*)
+      'up
+      'up)))
+(define *data-path*
+  (build-path *project-path* "var"))
+
+(define *dbm-path*
+  (build-path *data-path* "dps.dbm"))
+
+
 (define (main args)
   (let* (
          (dps-server (make <dps-server>
-                           ;:dbm (make <fsdbm>
-                           ;           :path *dbm-path*
-                           ;           :rw-mode :write
-                           ;           :key-convert #t
-                           ;           :value-convert #t)
-                           :dbm #f
+                           :dbm-type <fsdbm>
+                           :dbm-path *dbm-path*
                            ;; TODO: あとで引数を追加する
                            )))
     (dps-server-main dps-server)))

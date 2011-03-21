@@ -23,8 +23,13 @@
 
 (define-class <dps-server> ()
   (
-   (dbm :init-keyword :dbm
-        :init-form (error "dbm not found"))
+   ;; initial parameter
+   (dbm-type :init-keyword :dbm-type
+             :init-form (error "dbm-type not found"))
+   (dbm-path :init-keyword :dbm-path
+             :init-form (error "dbm-path not found"))
+   ;; internal parameter
+   (dbm :init-value #f)
    ))
 
 (define-method initialize ((self <dps-server>) initargs)
