@@ -26,14 +26,18 @@
    ;; initial parameter
    (dbm-type :init-keyword :dbm-type
              :init-form (error "dbm-type not found"))
-   (dbm-path :init-keyword :dbm-path
-             :init-form (error "dbm-path not found"))
+   (data-dir :init-keyword :data-dir
+             :init-form (error "data-dir not found"))
    ;; internal parameter
    (dbm :init-value #f)
    ))
 
 (define-method initialize ((self <dps-server>) initargs)
+  ;; TODO: data-dir の検査など
   (next-method))
+
+
+
 
 ;; TODO: zmq回りはあとで別モジュールに分ける筈なので、
 ;;       それを前提として手続き等を分離しておく事

@@ -14,7 +14,7 @@
   (add-load-path-from-script-relative-path "../lib")
 
   (use dps)
-  (use dbm.fsdbm)
+  (use dbm.gdbm)
   (export
     ))
 (select-module dps-server)
@@ -30,15 +30,12 @@
 (define *data-path*
   (build-path *project-path* "var"))
 
-(define *dbm-path*
-  (build-path *data-path* "dps.dbm"))
-
 
 (define (main args)
   (let* (
          (dps-server (make <dps-server>
-                           :dbm-type <fsdbm>
-                           :dbm-path *dbm-path*
+                           :dbm-type <gdbm>
+                           :data-dir *data-path*
                            ;; TODO: あとで引数を追加する
                            )))
     (dps-server-main dps-server)))
