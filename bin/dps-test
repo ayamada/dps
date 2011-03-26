@@ -1,6 +1,6 @@
 #!/usr/local/gauche/bin/gosh
 
-(define-module dps-server
+(define-module dps-test
   (use file.util)
   (define-macro (add-load-path-from-script-relative-path relative-path)
     (let1 path (resolve-path
@@ -17,7 +17,7 @@
   (use dbm.gdbm)
   (export
     ))
-(select-module dps-server)
+(select-module dps-test)
 
 
 (define *project-path*
@@ -33,18 +33,18 @@
 
 (define (main args)
   (let* (
-         (dps-server (make <dps-server>
-                           :dbm-type <gdbm>
-                           :data-dir *data-path*
-                           ;; TODO: あとで引数を追加する
-                           )))
-    (dps-server-main dps-server)))
+         (dps (make <dps>
+                    :dbm-type <gdbm>
+                    :data-dir *data-path*
+                    ;; TODO: あとで引数を追加する
+                    )))
+    (dps-main dps)))
 
 
 ;;;===================================================================
 
 (select-module user)
-(define main (with-module dps-server main))
+(define main (with-module dps-test main))
 
 ;; Local variables:
 ;; mode: scheme

@@ -15,13 +15,13 @@
   (c-load-library "libuuid.so")
   (c-include "uuid/uuid.h")
   (export
-    <dps-server>
-    dps-server-main
+    <dps>
+    dps-main
     ))
 (select-module dps)
 
 
-(define-class <dps-server> ()
+(define-class <dps> ()
   (
    ;; initial parameter
    (dbm-type :init-keyword :dbm-type
@@ -29,10 +29,13 @@
    (data-dir :init-keyword :data-dir
              :init-form (error "data-dir not found"))
    ;; internal parameter
-   (dbm :init-value #f)
+   (key->uuid-table :init-value #f)
+   (uuid->val-table :init-value #f)
+   (system-table :init-value #f)
+   (journal-log :init-value #f)
    ))
 
-(define-method initialize ((self <dps-server>) initargs)
+(define-method initialize ((self <dps>) initargs)
   ;; TODO: data-dir の検査など
   (next-method))
 
@@ -84,7 +87,7 @@
           (generate-uuid-string))))))
 
 
-(define-method dps-server-main ((self <dps-server>) . keywords)
+(define-method dps-main ((self <dps>) . keywords)
   ;; あとで
   ;; まず、最小で動くコードを書く必要がある。
   ;; それは、どのような動作をするコード？
