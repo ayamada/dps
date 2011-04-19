@@ -2,6 +2,7 @@
 ;; basic tests
 ;;
 
+(add-load-path "../lib")
 (use gauche.test)
 
 (test-start "uuid.scm")
